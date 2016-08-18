@@ -1,5 +1,4 @@
 #pragma once
-#include "Message.h"
 #include "Channel.h"
 class Cipher
 {
