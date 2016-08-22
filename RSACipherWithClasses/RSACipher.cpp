@@ -18,9 +18,19 @@ Message RSACipher::doCipher()
 {
 	unsigned char* ciphered = new unsigned char[this->getSentence().getLength() + 1];
 	ciphered[this->getSentence().getLength()] = '\0';
-	for (int i = 0; i < this->getSentence().getLength(); i++)
+
+	unsigned char* newMessage = new unsigned char[this->getSentence().getLength() + 1];
+	newMessage[this->getSentence().getLength()] = '\0';
+
+	newMessage[0] = this->getSentence().getMessage()[0];
+
+	for (int i = 1; i < this->getSentence().getLength(); i++)
 	{
-		ciphered[i] = powMod((((unsigned char*)this->getSentence().getMessage())[i]-96),e,n);
+		newMessage[i] = ((this->getSentence().getMessage()[i] + newMessage[i - 1]) % n);
+	}
+
+	for (int i = 0; i < this->getSentence().getLength(); i++) {
+		ciphered[i] = powMod((newMessage[i] - 96), e, n);
 	}
 	this->SendMessage(Message(ciphered));
 	return Message((char*)ciphered);
