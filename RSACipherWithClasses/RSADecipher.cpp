@@ -29,13 +29,13 @@ Message RSADecipher::doDecipher()
 
 	for (int i = 0; i < this->getCiphered().getLength(); i++)
 	{
-		result[i] = powMod((((unsigned char*)this->getCiphered().getMessage())[i]), d, n)+96;
+		result[i] = powMod((((unsigned char*)this->getCiphered().getMessage())[i]), d, n);
 	}
 
-	newResult[0] = result[0];
+	newResult[0] = result[0]+96;
 
 	for (int i = 1; i < this->getCiphered().getLength(); i++) {
-		newResult[i] = (result[i] - newResult[i - 1]) % n;
+		newResult[i] = ((result[i] - result[i - 1]) % n)+96;
 	}
 	this->setDeciphered(Message((char*)newResult));
 	return Message((char*)newResult);

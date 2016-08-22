@@ -22,15 +22,15 @@ Message RSACipher::doCipher()
 	unsigned char* newMessage = new unsigned char[this->getSentence().getLength() + 1];
 	newMessage[this->getSentence().getLength()] = '\0';
 
-	newMessage[0] = this->getSentence().getMessage()[0];
+	newMessage[0] = this->getSentence().getMessage()[0]-96;
 
 	for (int i = 1; i < this->getSentence().getLength(); i++)
 	{
-		newMessage[i] = ((this->getSentence().getMessage()[i] + newMessage[i - 1]) % n);
+		newMessage[i] = ((this->getSentence().getMessage()[i] + newMessage[i - 1]-96) % n);
 	}
 
 	for (int i = 0; i < this->getSentence().getLength(); i++) {
-		ciphered[i] = powMod((newMessage[i] - 96), e, n);
+		ciphered[i] = powMod((newMessage[i]), e, n);
 	}
 	this->SendMessage(Message(ciphered));
 	return Message((char*)ciphered);
